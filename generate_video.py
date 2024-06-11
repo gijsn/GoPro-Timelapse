@@ -11,10 +11,12 @@ import json
 import os
 current_dir = Path(__file__).parent
 
+connect_camera = True
+make_movie = False
+
 def main():
     print("Downloading files from GoPro")
 
-    connect_camera = False
     for dir in list(current_dir.glob('*/')):
         if len(list(dir.glob("*.mp4"))) > 0:
             continue
@@ -44,7 +46,11 @@ def main():
     except Exception as e:
         print(f"Exception: {e}")
     start_frame = int(os.listdir()[0].removeprefix("G").removesuffix(".JPG"))
-
+    if not make_movie:
+        print("Not assembling frames");
+        exit()
+        
+    print("Assembling individual frames into MP4")
     Path(os.getcwd())
     ffmpeg = (
         FFmpeg()
